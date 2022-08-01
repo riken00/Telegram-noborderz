@@ -59,6 +59,6 @@ class Command(BaseCommand):
         if text:
             payload = {"text":text}
             print(payload)
-            r = requests.post(WEB_HOOK_URL, json=payload)
-            LOGGER.info(f"WEB HOOK Post Response: {r.text}")
-            LOGGER.info(r.text)
+            # r = requests.post(WEB_HOOK_URL, json=payload)
+            # LOGGER.info(f"WEB HOOK Post Response: {r.text}")
+            # LOGGER.info(r.text)

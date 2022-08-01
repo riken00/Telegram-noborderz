@@ -1,16 +1,13 @@
-import sys
-import pygame as pg
-def run_game():
-    # Initialize and set up screen.
-    pg.init()
-    screen = pg.display.set_mode((1200, 800))
-    pg.display.set_caption("Alien Invasion")
-    # Start main loop.
-    while True:
-        # Start event loop.
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                sys.exit()
-# Refresh screen.
-        pg.display.flip()
-run_game()
+from telethon.sync import TelegramClient
+number = 85262550512
+id_ = 15451024
+hash_ = '6fb9eb2518d1bd451682c56ddc348be3'
+
+client = TelegramClient(f'./sessions/{number}',id_,hash_)
+
+
+client.connect()
+for msg in client.iter_messages('xanaofficial'):
+    print(msg.id)
+    
+client.disconnect()

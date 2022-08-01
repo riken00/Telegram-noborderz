@@ -49,7 +49,7 @@ class Command(BaseCommand):
         # if user_details.objects.filter(status="")
 
 
-        message_id = engagement_msg_id(groupname=AGENT_USER)
+        message_id = engagement_msg_id(groupname=AGENT_USER,all_message = False)
         print(message_id)
         count_ = 0
         if message_id:

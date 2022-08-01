@@ -232,7 +232,9 @@ from datetime import  timedelta, time
 import datetime
 import pytz
 
-def engagement_msg_id(groupname):
+def engagement_msg_id(groupname,all_message = False):
+    
+    
     last_few_days= datetime.datetime.now() - datetime.timedelta(days=2)
     msg_id = 0
     utc=pytz.UTC
@@ -248,13 +250,14 @@ def engagement_msg_id(groupname):
                 me = client.get_me()
                 client(JoinChannelRequest(groupname))
                 message_count = 0
-                for message in client.iter_messages(groupname):
-                    if utc.localize(last_few_days) <  message.date:
-                        msg_id = message.id
-                        msg_id_li.append(msg_id)
+                msg_id_li = [ message.id for message in client.iter_messages(groupname) ] if all_message == True else [ message.id for message in client.iter_messages(groupname) if utc.localize(last_few_days) <  message.date ]
+                # for message in client.iter_messages(groupname):
+                #     if utc.localize(last_few_days) <  message.date:
+                #         msg_id = message.id
+                #         msg_id_li.append(msg_id)
 
-                    if message_count > 50 : break
-                    message_count += 1
+                    # if message_count > 50 : break
+                    # message_count += 1
 
             else:
                 LOGGER.info(f'{user.number} is not authorized So please authorized it')    
@@ -311,8 +314,8 @@ def engagement_msg_id(groupname):
     return msg_id_li
 
 def engagement(groupname,Message_id,number,apiid,apihash,random_=0):
-    action_status = False
-    reaction_list = ["❤️","👍","🔥"]
+    action_status = False 
+    reaction_list = ["❤️","👍","🔥"]   
     view_nu = 0
     user = user_details.objects.filter(number=number).first()
     try:
@@ -528,11 +531,11 @@ class view_on_post():
             return False
 
     def new_tab(self):
-        self.driver.execute_script("window.open('https://web.telegram.org/z/', 'new_window')")
+        self.driver.execute_script("window.open('https://web.telegram.org/k/')")
+        self.driver.switch_to.window(self.driver.window_handles[0]) 
         self.driver.close()
-        # driver.switch_to_window(driver.window_handles[0])
-        self.driver.switch_to_window(self.driver.window_handles[0])
-        self.driver.get('https://web.telegram.org/k/')
+        self.driver.switch_to.window(self.driver.window_handles[0]) 
+        self.driver.refresh()
 
     def login(self,client,peer_name):
         try:
@@ -562,23 +565,42 @@ class view_on_post():
 
             if self.find_element('Note','note',By.CLASS_NAME,timeout=4):
                 self.click_element('Find btn','auth-number-edit',By.CLASS_NAME)
-
-            if login_need == True:
-                random_sleep(2,3)
-                self.click_element('phone number','c-ripple',By.CLASS_NAME)
-                self.input_text(self.number,'phone number field','//*[@id="auth-pages"]/div/div[2]/div[1]/div/div[3]/div[2]/div[1]')
-                random_sleep(2,3)
-                self.click_element('Next btn','//*[@id="auth-pages"]/div/div[2]/div[1]/div/div[3]/button[1]',By.XPATH,timeout=12,page='Login')
-                random_sleep(3,4)
-                client.connect()
-                telegram_msg = client.get_dialogs()[0].message
-                try:otp__ = str(telegram_msg.text).replace('**Login code:**','').split(' ')[1].replace('.','')
-                except Exception as e:otp__=''
-                client.disconnect()
-                try:self.input_text(otp__,'Otp input','//*[@id="auth-pages"]/div/div[2]/div[3]/div/div[3]/div/input',By.XPATH,timeout=40)
-                except Exception as e:LOGGER.error(e)
-                element__=self.find_element('home page','//*[@id="folders-container"]/div/div[1]/ul/li[1]/div[1]',By.XPATH,timeout=20)
-                if element__ :action.click(element__).perform()
+            
+            for i in range(3):  
+                if login_need == True:
+                    try:
+                        self.new_tab()
+                        random_sleep(2,3)
+                        self.click_element('phone number','c-ripple',By.CLASS_NAME)
+                        self.input_text(self.number,'phone number field','//*[@id="auth-pages"]/div/div[2]/div[1]/div/div[3]/div[2]/div[1]')
+                        random_sleep(2,3)
+                        self.click_element('Next btn','//*[@id="auth-pages"]/div/div[2]/div[1]/div/div[3]/button[1]',By.XPATH,timeout=12,page='Login')
+                        random_sleep(3,4)
+                        client.connect()
+                        telegram_msg = client.get_dialogs()[0].message
+                        try:otp__ = str(telegram_msg.text).replace('**Login code:**','').split(' ')[1].replace('.','')
+                        except Exception as e:otp__=''
+                        client.disconnect()
+                        try:self.input_text(otp__,'Otp input','//*[@id="auth-pages"]/div/div[2]/div[3]/div/div[3]/div/input',By.XPATH,timeout=40)
+                        except Exception as e:LOGGER.error(e)
+                        element__=self.find_element('home page','//*[@id="folders-container"]/div/div[1]/ul/li[1]/div[1]',By.XPATH,timeout=20)
+                        if element__ :
+                            action.click(element__).perform()
+                        break
+                        # if all_ele:
+                        #     for ele in all_ele:
+                        #         if "log in by phone number" in str(ele.text).lower():
+                        #             login_need = True
+                        #             break 
+                        #         elif "log in to telegram by" in str(ele.text).lower():
+                        #             login_need = True
+                        #             break 
+                        #         else : login_need = False
+                        ...
+                    except : 
+                        self.new_tab()
+                        ...
+                    
 
 
 
@@ -592,7 +614,8 @@ class view_on_post():
             link__ = ''
             client.connect()
             entity = client.get_entity(self.groupusername)
-            chat_listt = self.driver.find_elements_by_class_name('chatlist-chat')
+            chat_listt = self.driver.find_elements(By.CLASS_NAME,'chatlist-chat')
+            # chat_listt = self.driver.find_elements_by_class_name('chatlist-chat')
             for chat_ in chat_listt:
                 link_id  = chat_.get_attribute('href')
                 if str(entity.id) in str(link_id):
@@ -600,11 +623,6 @@ class view_on_post():
                     break
             client.disconnect()
             self.driver.get('https://web.telegram.org/k/')
-
-
-
-            # self.driver.get(f'https://web.telegram.org/z/#{self.groupid}')
-            # self.driver.get(link__)
             self.driver.get('https://web.telegram.org/z/#-1665674176')
             time.sleep(3)
             self.driver.refresh()
@@ -640,10 +658,11 @@ class view_on_post():
                     action.context_click(message_ele).perform()
                     time.sleep(2)
                     # //*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[4]
-                    reaction_ele = self.driver.find_element(By.XPATH,f'//*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{reaction_id}]')
+                    self.click_element('Message box',f'//*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{reaction_id}]',By.XPATH)
+                    # reaction_ele = self.driver.find_element(By.XPATH,f'//*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{reaction_id}]')
                     # reaction_ele = self.driver.find_element(By.XPATH,f'//*[@id="message{self.msg_id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{random.choice(reaction_list)}]')
-                    reaction_ele.click()
-                    random_sleep(3,4)
+                    # reaction_ele.click()
+                    random_sleep(1,2)
             self.driver.get(f"https://web.telegram.org/k/#@{self.groupusername}")
 
 
