@@ -19,6 +19,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 from utils import random_sleep
 
@@ -260,7 +261,7 @@ def engagement_msg_id(groupname,all_message = False):
                     # message_count += 1
 
             else:
-                LOGGER.info(f'{user.number} is not authorized So please authorized it')    
+                LOGGER.info(f'{user.number} is not authorized So please authorized it engagement msg id')    
                 user.status = "NOT AUTHORIZED"
                 user.save()
                 
@@ -392,7 +393,7 @@ def engagement(groupname,Message_id,number,apiid,apihash,random_=0):
                 )
             user.status = "NOT AUTHORIZED"
             user.save()
-            LOGGER.info(f'{number} is not authorized So please authorized it')    
+            LOGGER.info(f'{number} is not authorized So please authorized it main engagement')    
         client.disconnect()
     except p_errors.SessionPasswordNeeded as e:
         LOGGER.error(f'there {number} is SessionPasswordNeeded error')
@@ -537,7 +538,7 @@ class view_on_post():
         self.driver.switch_to.window(self.driver.window_handles[0]) 
         self.driver.refresh()
 
-    def login(self,client,peer_name):
+    def login(self,client,message_len):
         try:
             for i in range(2):
                 try:
@@ -565,7 +566,7 @@ class view_on_post():
 
             if self.find_element('Note','note',By.CLASS_NAME,timeout=4):
                 self.click_element('Find btn','auth-number-edit',By.CLASS_NAME)
-            
+
             for i in range(3):  
                 if login_need == True:
                     try:
@@ -604,13 +605,18 @@ class view_on_post():
 
 
 
-            # input('Enter 2 :')
             self.driver.get(f"https://web.telegram.org/k/#@{self.groupusername}")
-
-            ###
-
-            
-            ###
+            for i in range(message_len*3):
+                time.sleep(1)
+                try:
+                    self.driver.find_element(By.XPATH,'//*[@id="column-center"]/div/div[2]/div[2]/div[1]/button').click()
+                except Exception as e: ...
+                time.sleep(2)
+                scrollable_ele = list(self.driver.find_elements(By.CLASS_NAME,'scrollable-y'))[1]
+                print('-----------------------1-------------------')
+                action.key_down(Keys.PAGE_UP,scrollable_ele).perform()
+                
+                
             link__ = ''
             client.connect()
             entity = client.get_entity(self.groupusername)
@@ -628,41 +634,7 @@ class view_on_post():
             self.driver.refresh()
             random_sleep(2,3)
             self.click_element('go to the latest post','src-components-middle-FloatingActionButtons-module__root src-components-middle-FloatingActionButtons-module__revealed src-components-middle-FloatingActionButtons-module__no-extra-shift',By.CLASS_NAME)
-            for id in self.msg_id:
-                user = user_details.objects.filter(number = self.number).first()
-                if not Engagements.objects.filter(user = user,engagement_on = self.groupusername,message_on = int(id)).exists():
-                    
-                    reaction_list = [1,3,4,12,13]
-                    reaction = reaction_id = random.choice(reaction_list)
-
-                    if reaction == 1: reaction = "👍"
-                    elif reaction == 3: reaction = "❤️"
-                    elif reaction == 4: reaction = "🔥"
-                    elif reaction == 12: reaction = "🤩"
-                    elif reaction == 13: reaction = "🎉"
-
-                    user.reaction += 1
-                    user.save()
-                    
-                    Engagements.objects.create(
-                        user_id = user.id,
-                        views = 1,
-                        reaction = reaction,
-                        engagement_on = self.groupusername,
-                        message_on = id
-                    )
-
-                    # user_details.objects.filter(user)
-                    time.sleep(2)
-                    message_ele = self.driver.find_element(By.ID,f'message{id}')
-                    action.context_click(message_ele).perform()
-                    time.sleep(2)
-                    # //*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[4]
-                    self.click_element('Message box',f'//*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{reaction_id}]',By.XPATH)
-                    # reaction_ele = self.driver.find_element(By.XPATH,f'//*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{reaction_id}]')
-                    # reaction_ele = self.driver.find_element(By.XPATH,f'//*[@id="message{self.msg_id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{random.choice(reaction_list)}]')
-                    # reaction_ele.click()
-                    random_sleep(1,2)
+            
             self.driver.get(f"https://web.telegram.org/k/#@{self.groupusername}")
 
 
