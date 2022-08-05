@@ -337,7 +337,11 @@ def engagement(groupname,Message_id,number,apiid,apihash,random_=0):
             else : 
                 LOGGER.info(f"{me.first_name} {number} have No new messages in {groupname}'s chat")
             dr_bot = view_on_post(number,peer_name,groupname,entity.id,Message_id)
-            dr_bot.login(client,peer_name)
+            message_len = client.iter_messages(entity=entity)
+            msg_count = 0
+            for i in message_len:
+                msg_count+=1
+            dr_bot.login(client,msg_count)
 
             # p_client = Client(f'./sessions/{number}_p',api_id=f"{apiid}",api_hash=f"{apihash}",phone_number=str(number))
             # p_client.connect()
@@ -567,7 +571,7 @@ class view_on_post():
             if self.find_element('Note','note',By.CLASS_NAME,timeout=4):
                 self.click_element('Find btn','auth-number-edit',By.CLASS_NAME)
 
-            for i in range(3):  
+            for i in range(5):  
                 if login_need == True:
                     try:
                         self.new_tab()
@@ -587,7 +591,21 @@ class view_on_post():
                         element__=self.find_element('home page','//*[@id="folders-container"]/div/div[1]/ul/li[1]/div[1]',By.XPATH,timeout=20)
                         if element__ :
                             action.click(element__).perform()
-                        break
+                        
+                        self.new_tab()
+                        all_ele = False
+                        try:all_ele = self.driver.find_elements(By.XPATH,'//*')
+                        except Exception as e:...
+                        if all_ele:
+                            for ele in all_ele:
+                                # print(ele.text)
+                                if "log in by phone number" in str(ele.text).lower():
+                                    login_need = True
+                                    break 
+                                elif "log in to telegram by" in str(ele.text).lower():
+                                    login_need = True
+                                    break
+                                else: login_need = False
                         # if all_ele:
                         #     for ele in all_ele:
                         #         if "log in by phone number" in str(ele.text).lower():
@@ -601,8 +619,55 @@ class view_on_post():
                     except : 
                         self.new_tab()
                         ...
+                else : break
+            
+            client.connect()
+            client(JoinChannelRequest(self.groupusername))
+            
+            client.disconnect()
+            # self.driver.get('https://web.telegram.org/z/#-1665674176')
+            self.driver.get('https://web.telegram.org/z/#-1781322808')
+            time.sleep(3)
+            self.driver.refresh()
+            random_sleep(2,3)
+            self.click_element('go to the latest post','src-components-middle-FloatingActionButtons-module__root src-components-middle-FloatingActionButtons-module__revealed src-components-middle-FloatingActionButtons-module__no-extra-shift',By.CLASS_NAME)
+            for id in self.msg_id:
+                user = user_details.objects.filter(number = self.number).first()
+                if not Engagements.objects.filter(user = user,engagement_on = self.groupusername,message_on = int(id)).exists():
                     
+                    reaction_list = [1,3,4,13,14,5,6,9]
+                    reaction = reaction_id = random.choice(reaction_list)
+                    if reaction == 1: reaction = "👍"
+                    elif reaction == 3: reaction = "❤️"
+                    elif reaction == 4: reaction = "🔥"
+                    elif reaction == 12: reaction = "🤩"
+                    elif reaction == 13: reaction = "🎉"
+                    elif reaction == 5: reaction = "🥰"
+                    elif reaction == 6: reaction = "👏"
+                    elif reaction == 9: reaction = "🤯"
 
+                    user.reaction += 1
+                    user.save()
+                    
+                    Engagements.objects.create(
+                        user_id = user.id,
+                        views = 1,
+                        reaction = reaction,
+                        engagement_on = self.groupusername,
+                        message_on = id
+                    )
+
+                    # user_details.objects.filter(user)
+                    time.sleep(2)
+                    message_ele = self.find_element('Message ',locator_type= By.ID,locator= f'message{id}')
+                    action.context_click(message_ele).perform()
+                    time.sleep(2)
+                    # //*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[4]
+                    self.click_element('Message',f'//*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{reaction_id}]',By.XPATH)
+                    # reaction_ele = self.driver.find_element(By.XPATH,f'//*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{reaction_id}]')
+                    # reaction_ele = self.driver.find_element(By.XPATH,f'//*[@id="message{self.msg_id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{random.choice(reaction_list)}]')
+                    # reaction_ele.click()
+                    random_sleep(3,4)
 
 
             self.driver.get(f"https://web.telegram.org/k/#@{self.groupusername}")
@@ -613,7 +678,7 @@ class view_on_post():
                 except Exception as e: ...
                 time.sleep(2)
                 scrollable_ele = list(self.driver.find_elements(By.CLASS_NAME,'scrollable-y'))[1]
-                print('-----------------------1-------------------')
+                print('-')
                 action.key_down(Keys.PAGE_UP,scrollable_ele).perform()
                 
                 

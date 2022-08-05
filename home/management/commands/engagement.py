@@ -35,7 +35,7 @@ class Command(BaseCommand):
 
         # AGENT_USER = 'qatestingxana'
         AGENT_USER = 'piyush_0012'
-        AGENT_USER = 'xanaofficial'
+        AGENT_USER = 'xana_11'
         # AGENT_USER = 'xana_text'
         # AGENT_USER = str(os.getenv('AGENT_USER',''))
         # ENGAGEMENT_COUNT = int(os.getenv('ENGAGEMENT_COUNT',''))
@@ -49,7 +49,7 @@ class Command(BaseCommand):
         # if user_details.objects.filter(status="")
 
 
-        message_id = engagement_msg_id(groupname=AGENT_USER,all_message = False)
+        message_id = engagement_msg_id(groupname=AGENT_USER,all_message = True)
         print(message_id)
         count_ = 0
         if message_id:
@@ -57,12 +57,12 @@ class Command(BaseCommand):
             for i in range(len(all_active_user)):
                 user = all_active_user.pop(0)
                 count_ += 1
-                print(user)
-                for id in message_id:
-                    if not Engagements.objects.filter(user = user,engagement_on = AGENT_USER,message_on = int(id)).exists():
-                        
-                        engagement(random_=2,groupname=AGENT_USER,Message_id=message_id,number=user.number,apiid=user.api_id,apihash=user.api_hash)
-                        break
+                # print(user)
+                # for id in message_id:
+                # if not Engagements.objects.filter(user = user,engagement_on = AGENT_USER,message_on = int(id)).exists():
+                    
+                engagement(random_=2,groupname=AGENT_USER,Message_id=message_id,number=user.number,apiid=user.api_id,apihash=user.api_hash)
+                # break
         else:   
             LOGGER.info('We could not find the message of which we are looking for to do engagement.')
         print('\n\n\n\n-----------',count_)
