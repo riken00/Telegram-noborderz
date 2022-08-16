@@ -50,7 +50,7 @@ class comments(models.Model):
 class view(models.Model):
     user = models.ForeignKey(user_details,on_delete=models.CASCADE)
     views_on = models.CharField(default='-',max_length=255)
-    # message_on = models.IntegerField(default=0)
+    message_on = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True,blank=True, null=True)
 

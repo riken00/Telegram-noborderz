@@ -70,7 +70,7 @@ def driver_options(profile_dir):
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
     options.add_argument('--disable-blink-features=AutomationControlled')
-    options.add_argument('--user-data-dir=./profiles/')
+    options.add_argument('--user-data-dir=G:\Code\OFFICE-WORK\TELEGRAM\Telegram-noborderz\profiles')
     options.add_argument(f"--profile-directory={profile_dir}")
     # prefs = {"credentials_enable_service": True,
     #          "profile.password_manager_enabled": True}

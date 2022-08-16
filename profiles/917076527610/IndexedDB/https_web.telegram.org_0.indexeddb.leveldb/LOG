@@ -1,0 +1,14 @@
+2022/08/15-19:20:34.213 1da4 Creating DB G:\Code\OFFICE-WORK\TELEGRAM\Telegram-noborderz\profiles\917076527610\IndexedDB\https_web.telegram.org_0.indexeddb.leveldb since it was missing.
+2022/08/15-19:20:34.223 1da4 Reusing MANIFEST G:\Code\OFFICE-WORK\TELEGRAM\Telegram-noborderz\profiles\917076527610\IndexedDB\https_web.telegram.org_0.indexeddb.leveldb/MANIFEST-000001
+2022/08/15-19:21:29.711 a4c Level-0 table #5: started
+2022/08/15-19:21:29.861 a4c Level-0 table #5: 1849408 bytes OK
+2022/08/15-19:21:29.880 a4c Delete type=0 #3
+2022/08/15-19:21:30.562 1ad0 Level-0 table #7: started
+2022/08/15-19:21:30.672 1ad0 Level-0 table #7: 1898892 bytes OK
+2022/08/15-19:21:30.681 1ad0 Delete type=0 #4
+2022/08/15-19:21:30.756 1ad0 Compacting 1@1 + 1@2 files
+2022/08/15-19:21:30.941 1ad0 Generated table #8@1: 2516 keys, 1158537 bytes
+2022/08/15-19:21:30.942 1ad0 Compacted 1@1 + 1@2 files => 1158537 bytes
+2022/08/15-19:21:30.946 1ad0 compacted to: files[ 0 0 1 0 0 0 0 ]
+2022/08/15-19:21:30.947 1ad0 Delete type=2 #5
+2022/08/15-19:21:30.947 1ad0 Delete type=2 #7

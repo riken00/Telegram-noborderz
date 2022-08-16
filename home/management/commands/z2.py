@@ -18,5 +18,18 @@ class Command(BaseCommand):
     #     parser.add_argument('number', type=str, help='Phone number of New user')
         
     def handle(self,*args, **kwargs):
-        print(user_details.objects.filter(emulator='pixel21'))
+        all_user = user_details.objects.all()
+        
+        count = 0
+        for user in all_user :
+            client = TelegramClient(f'./sessions/{user.number}',user.api_id,user.api_hash)
+            client.connect()
+            import time
+            if client.is_user_authorized():
+                count+= 1
+                print(count)    
+                print(client.get_me().first_name) 
+                time.sleep(0.5)  
+            client.disconnect()
+        print(count,'------------------')
         ...

@@ -1,6 +1,5 @@
 from distutils.log import error
 from email import message
-from socket import MSG_DONTWAIT
 import time
 import random
 from requests import request
@@ -20,7 +19,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
-
+from selenium.webdriver.remote.command import Command
 from utils import random_sleep
 
 
@@ -457,6 +456,7 @@ class view_on_post():
         self.driver.get('https://web.telegram.org/k/')
         self.driver.refresh()
         self.logger = LOGGER
+        self.viewed_msg_timestemps = []
 
         self.groupusername = groupusername
         self.groupid = groupid
@@ -542,6 +542,8 @@ class view_on_post():
         self.driver.switch_to.window(self.driver.window_handles[0]) 
         self.driver.refresh()
 
+   
+
     def login(self,client,message_len):
         try:
             for i in range(2):
@@ -551,21 +553,29 @@ class view_on_post():
                     break
                 except TimeoutException :
                     LOGGER.error('The driver got timeout error')
-            self.new_tab()
-            random_sleep(6,7)
-            all_ele = False
-            try:all_ele = self.driver.find_elements(By.XPATH,'//*')
-            except Exception as e:...
-            login_need = False
-            if all_ele:
-                for ele in all_ele:
-                    # print(ele.text)
-                    if "log in by phone number" in str(ele.text).lower():
-                        login_need = True
-                        break 
-                    elif "log in to telegram by" in str(ele.text).lower():
-                        login_need = True
-                        break 
+
+            for i in range(2):
+                self.new_tab()
+                random_sleep(6,7)
+                if self.find_element('number btn','//*[@id="auth-pages"]/div/div[2]/div[2]/div/div[2]/button',By.XPATH):
+                    login_need = True
+                    break
+                all_ele = False
+                # if self.find_element('Authentication Page','auth-pages',By.ID,page='login'):
+                #     login_need = True
+                #     break
+                try:all_ele = self.driver.find_elements(By.XPATH,'//*')
+                except Exception as e:...
+                login_need = False
+                if all_ele:
+                    for ele in all_ele:
+                        # print(ele.text)
+                        if "log in by phone number" in str(ele.text).lower():
+                            login_need = True
+                            break 
+                        elif "log in to telegram by" in str(ele.text).lower():
+                            login_need = True
+                            break 
             action = ActionChains(self.driver)
 
             if self.find_element('Note','note',By.CLASS_NAME,timeout=4):
@@ -606,16 +616,7 @@ class view_on_post():
                                     login_need = True
                                     break
                                 else: login_need = False
-                        # if all_ele:
-                        #     for ele in all_ele:
-                        #         if "log in by phone number" in str(ele.text).lower():
-                        #             login_need = True
-                        #             break 
-                        #         elif "log in to telegram by" in str(ele.text).lower():
-                        #             login_need = True
-                        #             break 
-                        #         else : login_need = False
-                        ...
+                        
                     except : 
                         self.new_tab()
                         ...
@@ -626,100 +627,164 @@ class view_on_post():
             
             client.disconnect()
             # self.driver.get('https://web.telegram.org/z/#-1665674176')
-            self.driver.get('https://web.telegram.org/z/#-1781322808')
+            # self.driver.get('https://web.telegram.org/z/#-1781322808')
             time.sleep(3)
             self.driver.refresh()
             random_sleep(2,3)
-            self.click_element('go to the latest post','src-components-middle-FloatingActionButtons-module__root src-components-middle-FloatingActionButtons-module__revealed src-components-middle-FloatingActionButtons-module__no-extra-shift',By.CLASS_NAME)
-            for id in self.msg_id:
-                user = user_details.objects.filter(number = self.number).first()
-                if not Engagements.objects.filter(user = user,engagement_on = self.groupusername,message_on = int(id)).exists():
-                    
-                    reaction_list = [1,3,4,13,14,5,6,9]
-                    reaction = reaction_id = random.choice(reaction_list)
-                    if reaction == 1: reaction = "👍"
-                    elif reaction == 3: reaction = "❤️"
-                    elif reaction == 4: reaction = "🔥"
-                    elif reaction == 12: reaction = "🤩"
-                    elif reaction == 13: reaction = "🎉"
-                    elif reaction == 5: reaction = "🥰"
-                    elif reaction == 6: reaction = "👏"
-                    elif reaction == 9: reaction = "🤯"
-
-                    user.reaction += 1
-                    user.save()
-                    
-                    Engagements.objects.create(
-                        user_id = user.id,
-                        views = 1,
-                        reaction = reaction,
-                        engagement_on = self.groupusername,
-                        message_on = id
-                    )
-
-                    # user_details.objects.filter(user)
-                    time.sleep(2)
-                    message_ele = self.find_element('Message ',locator_type= By.ID,locator= f'message{id}')
-                    action.context_click(message_ele).perform()
-                    time.sleep(2)
-                    # //*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[4]
-                    self.click_element('Message',f'//*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{reaction_id}]',By.XPATH)
-                    # reaction_ele = self.driver.find_element(By.XPATH,f'//*[@id="message{id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{reaction_id}]')
-                    # reaction_ele = self.driver.find_element(By.XPATH,f'//*[@id="message{self.msg_id}"]/div[4]/div/div[2]/div[1]/div[3]/div/div[{random.choice(reaction_list)}]')
-                    # reaction_ele.click()
-                    random_sleep(3,4)
-
-
-            self.driver.get(f"https://web.telegram.org/k/#@{self.groupusername}")
-            for i in range(message_len*3):
-                time.sleep(1)
-                try:
-                    self.driver.find_element(By.XPATH,'//*[@id="column-center"]/div/div[2]/div[2]/div[1]/button').click()
-                except Exception as e: ...
-                time.sleep(2)
-                scrollable_ele = list(self.driver.find_elements(By.CLASS_NAME,'scrollable-y'))[1]
-                print('-')
-                action.key_down(Keys.PAGE_UP,scrollable_ele).perform()
-                
-                
-            link__ = ''
-            client.connect()
-            entity = client.get_entity(self.groupusername)
-            chat_listt = self.driver.find_elements(By.CLASS_NAME,'chatlist-chat')
-            # chat_listt = self.driver.find_elements_by_class_name('chatlist-chat')
-            for chat_ in chat_listt:
-                link_id  = chat_.get_attribute('href')
-                if str(entity.id) in str(link_id):
-                    link__ = link_id
-                    break
-            client.disconnect()
-            self.driver.get('https://web.telegram.org/k/')
-            self.driver.get('https://web.telegram.org/z/#-1665674176')
-            time.sleep(3)
-            self.driver.refresh()
-            random_sleep(2,3)
+            print(f'------------0-------------------{self.groupusername}')
             self.click_element('go to the latest post','src-components-middle-FloatingActionButtons-module__root src-components-middle-FloatingActionButtons-module__revealed src-components-middle-FloatingActionButtons-module__no-extra-shift',By.CLASS_NAME)
             
-            self.driver.get(f"https://web.telegram.org/k/#@{self.groupusername}")
 
+            self.driver.get(f"https://web.telegram.org/k/#@{self.groupusername}")
+            client.connect()
+            print(f'------------1-------------------{self.groupusername}')
+            from datetime import datetime
+            all_msg = {}
+            for i in client.iter_messages(client.get_entity(self.groupusername)) :
+                print('------------2-------------------')
+                    
+                msg_id = i.id
+                msg_datetime = i.date
+                import pytz
+                epoch_time = datetime(1970, 1, 1, 0, 0, 0).replace(tzinfo=pytz.UTC)
+                msg_time_dates = (msg_datetime.year, msg_datetime.month, msg_datetime.day, int(msg_datetime.strftime("%H")), int(msg_datetime.strftime("%M")), int(msg_datetime.strftime("%S")))
+                msg_time_dates = datetime(*msg_time_dates).replace(tzinfo=pytz.UTC)
+                delta = (msg_datetime - epoch_time)
+                secound_timestemp = int(delta.total_seconds())
+                all_msg [secound_timestemp] = msg_id
+                
+            user = user_details.objects.filter(number = self.number).first()
+
+            print('------------3-------------------')
+            client.disconnect()
+            
+            
+            print('------------4-------------------')
+            self.driver.get(f"https://web.telegram.org/k/#@{self.groupusername}")
+            print('---------------------------0',self.groupusername)
+            total_sent_view = view.objects.filter(user = user, views_on = self.groupusername ).count()  
+            displayed_msgs_eles = []
+            for _ in range(len(all_msg)):
+                print(len(all_msg) ,total_sent_view ,'==========================5========================')
+                random_sleep(7,10)
+                displayed_msgs_eles = self.get_message_elements()
+                for msg_ele in displayed_msgs_eles :
+                    timestemp = msg_ele[1]
+                    if not timestemp in self.viewed_msg_timestemps :self.viewed_msg_timestemps.append(timestemp)
+                    else : continue
+                    time.sleep(1)
+                    try:self.driver.find_element(By.XPATH,'//*[@id="page-chats"]/div[1]/div[5]/div[2]/button[5]').click()
+                    except Exception as e: ...
+                    # action.scroll_to_element(msg_ele[0]).perform()
+                    try:
+                        self.driver.execute_script("arguments[0].scrollIntoView();", msg_ele[0])
+                        
+                    except Exception as e: 
+                        print('-------------------------------11111111111111111')
+                        
+                    if not Engagements.objects.filter(user = user,engagement_on = self.groupusername,message_on = int(all_msg[timestemp])).exists():
+                    
+                        reaction_list = [1,3,4,13,14,5,6,9]
+                        reaction = reaction_id = random.choice(reaction_list)
+                        if reaction == 1: reaction = "👍"
+                        elif reaction == 3: reaction = "❤️"
+                        elif reaction == 4: reaction = "🔥"
+                        elif reaction == 12: reaction = "🤩"
+                        elif reaction == 13: reaction = "🎉"
+                        elif reaction == 5: reaction = "🥰"
+                        elif reaction == 6: reaction = "👏"
+                        elif reaction == 9: reaction = "🤯"
+
+                        
+                        action.context_click(msg_ele[0]).perform()
+                        time.sleep(3)
+                        try:
+                            self.driver.execute_script(f'document.querySelector("#column-center > div > div > div.btn-menu-reactions-container.btn-menu-reactions-container-vertical > div > div > div:nth-child({reaction_id})").click()')
+                            user.reaction += 1
+                            user.save()
+                            
+                            Engagements.objects.create(
+                                user_id = user.id,
+                                views = 1,
+                                reaction = reaction,
+                                engagement_on = self.groupusername,
+                                message_on = all_msg[timestemp]
+                            )
+                        except Exception as e: 
+                            ...
+                        # try:
+                        #     self.driver.execute_script(f'document.querySelector("#column-center > div > div > div.btn-menu-reactions-container.btn-menu-reactions-container-vertical > div > div > div:nth-child({reaction_id})").click()')
+                        # except Exception as e: 
+                        #     ...
+                            
+                        
+                    if not view.objects.filter(user = user, message_on = all_msg[timestemp]).exists():
+                        view.objects.create(
+                            user = user ,
+                            views_on = self.groupusername,
+                            message_on = all_msg[timestemp]
+                        )
+                        user.views += 1
+                        user.save()
+                    random_sleep()
+                time.sleep(2)
+                if msg_ele:action.key_down(Keys.PAGE_UP,msg_ele[0]).perform()
+                else : 
+                    msg_ele_0 = self.find_element('scrollable ele','scrollable scrollable-y',By.CLASS_NAME)
+                    action.key_down(Keys.PAGE_UP,msg_ele_0).perform()
+                total_sent_view = view.objects.filter(user = user, views_on = self.groupusername ).count()  
+            
+            client.disconnect()
+            
+            self.driver.refresh()
+            random_sleep(2,3)
+            
 
             random_sleep(4,5)
         except KeyboardInterrupt :
             LOGGER.error('There was an keyboard interrupt...')
         except Exception as e:
             LOGGER.error(e,'------Error\n------Error\n------Error\n------Error\n------Error\n------Error\n')
-            # input('Enter :')
+            # self.driver.quit()
+        # self.driver.quit()
+        try:
             self.driver.quit()
-        self.driver.quit()
-
+        except Exception as e: ...     
         time.sleep(3)
 
 
 
+    def get_message_elements(self):
+        message_ele = []
+        time.sleep(3)
+        channels_post = list(self.driver.find_elements(By.CLASS_NAME,'channel-post'))
+        # print(len(channels_post),'------------------\n\n\n\n\n')
+        # for ele in channels_post :
+            # print(ele,'---------------7--------------------')
+        for ele in self.driver.find_elements(By.CLASS_NAME,'channel-post') :
+            # print(ele,'------------------6----------------')
+            timestemp = ele.get_attribute('data-timestamp')
+            if timestemp:
+                if not timestemp in self.viewed_msg_timestemps :
+                    message_ele.append(ele)
+                # break
 
+        message_ele.reverse()
 
+        all_time_stemps = []
 
-
+        for msg in message_ele :
+            time_stemp = int(msg.get_attribute('data-timestamp'))
+            all_time_stemps.append(time_stemp)
+        all_time_stemps.sort()
+        all_time_stemps.reverse()
+        message_list = []
+        for time_stemp in all_time_stemps :
+            for msg in message_ele :
+                if time_stemp == int(msg.get_attribute('data-timestamp')) :
+                    message_list.append([msg, time_stemp])
+                    break
+        return message_list
 
 
 

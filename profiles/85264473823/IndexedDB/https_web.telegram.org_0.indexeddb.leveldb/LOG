@@ -1,0 +1,9 @@
+2022/08/16-07:54:41.384 11ac Reusing MANIFEST G:\Code\OFFICE-WORK\TELEGRAM\Telegram-noborderz\profiles\85264473823\IndexedDB\https_web.telegram.org_0.indexeddb.leveldb/MANIFEST-000001
+2022/08/16-07:54:41.384 11ac Recovering log #3
+2022/08/16-07:54:41.466 11ac Reusing old log G:\Code\OFFICE-WORK\TELEGRAM\Telegram-noborderz\profiles\85264473823\IndexedDB\https_web.telegram.org_0.indexeddb.leveldb/000003.log 
+2022/08/16-07:59:28.697 9ac Level-0 table #5: started
+2022/08/16-07:59:28.851 9ac Level-0 table #5: 2206131 bytes OK
+2022/08/16-07:59:28.854 9ac Delete type=0 #3
+2022/08/16-08:08:05.296 4174 Level-0 table #7: started
+2022/08/16-08:08:05.438 4174 Level-0 table #7: 2333579 bytes OK
+2022/08/16-08:08:05.442 4174 Delete type=0 #4

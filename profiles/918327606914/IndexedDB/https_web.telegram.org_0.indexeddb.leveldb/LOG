@@ -1,0 +1,55 @@
+2022/08/16-08:40:07.156 2e9c Creating DB G:\Code\OFFICE-WORK\TELEGRAM\Telegram-noborderz\profiles\918327606914\IndexedDB\https_web.telegram.org_0.indexeddb.leveldb since it was missing.
+2022/08/16-08:40:07.172 2e9c Reusing MANIFEST G:\Code\OFFICE-WORK\TELEGRAM\Telegram-noborderz\profiles\918327606914\IndexedDB\https_web.telegram.org_0.indexeddb.leveldb/MANIFEST-000001
+2022/08/16-08:41:03.301 2a04 Level-0 table #5: started
+2022/08/16-08:41:03.656 2a04 Level-0 table #5: 2451639 bytes OK
+2022/08/16-08:41:03.685 2a04 Delete type=0 #3
+2022/08/16-08:41:03.764 37c0 Level-0 table #7: started
+2022/08/16-08:41:04.190 37c0 Level-0 table #7: 2596234 bytes OK
+2022/08/16-08:41:04.239 37c0 Delete type=0 #4
+2022/08/16-08:41:04.297 102c Compacting 1@1 + 1@2 files
+2022/08/16-08:41:04.422 102c Generated table #8@1: 565 keys, 1606307 bytes
+2022/08/16-08:41:04.422 102c Compacted 1@1 + 1@2 files => 1606307 bytes
+2022/08/16-08:41:04.435 102c compacted to: files[ 0 0 1 0 0 0 0 ]
+2022/08/16-08:41:04.435 102c Delete type=2 #5
+2022/08/16-08:41:04.435 102c Delete type=2 #7
+2022/08/16-08:41:04.843 102c Level-0 table #10: started
+2022/08/16-08:41:05.070 102c Level-0 table #10: 1938791 bytes OK
+2022/08/16-08:41:05.089 102c Delete type=0 #6
+2022/08/16-08:41:05.100 102c Compacting 1@1 + 1@2 files
+2022/08/16-08:41:05.411 102c Generated table #11@1: 2090 keys, 1910434 bytes
+2022/08/16-08:41:05.411 102c Compacted 1@1 + 1@2 files => 1910434 bytes
+2022/08/16-08:41:05.415 102c compacted to: files[ 0 0 1 0 0 0 0 ]
+2022/08/16-08:41:06.064 3868 Level-0 table #13: started
+2022/08/16-08:41:06.183 3868 Level-0 table #13: 1881171 bytes OK
+2022/08/16-08:41:06.188 3868 Delete type=2 #8
+2022/08/16-08:41:06.188 3868 Delete type=0 #9
+2022/08/16-08:41:06.188 3868 Delete type=2 #10
+2022/08/16-08:41:25.352 1a8c Compacting 1@1 + 1@2 files
+2022/08/16-08:41:25.476 1a8c Generated table #14@1: 1528 keys, 2130280 bytes
+2022/08/16-08:41:25.547 1a8c Generated table #15@1: 1271 keys, 202666 bytes
+2022/08/16-08:41:25.547 1a8c Compacted 1@1 + 1@2 files => 2332946 bytes
+2022/08/16-08:41:25.551 1a8c compacted to: files[ 0 0 2 0 0 0 0 ]
+2022/08/16-08:41:25.552 1a8c Delete type=2 #11
+2022/08/16-08:41:25.552 1a8c Delete type=2 #13
+2022/08/16-08:48:41.513 1904 Level-0 table #17: started
+2022/08/16-08:48:41.635 1904 Level-0 table #17: 2233238 bytes OK
+2022/08/16-08:48:41.639 1904 Delete type=0 #12
+2022/08/16-08:53:49.653 3d24 Compacting 1@1 + 2@2 files
+2022/08/16-08:53:49.960 3d24 Generated table #18@1: 1449 keys, 2116195 bytes
+2022/08/16-08:53:49.989 3d24 Generated table #19@1: 1272 keys, 206758 bytes
+2022/08/16-08:53:49.989 3d24 Compacted 1@1 + 2@2 files => 2322953 bytes
+2022/08/16-08:53:49.991 3d24 compacted to: files[ 0 0 2 0 0 0 0 ]
+2022/08/16-08:53:49.991 3d24 Delete type=2 #14
+2022/08/16-08:53:49.991 3d24 Delete type=2 #15
+2022/08/16-08:53:49.991 3d24 Delete type=2 #17
+2022/08/16-08:57:58.675 1328 Level-0 table #21: started
+2022/08/16-08:57:58.819 1328 Level-0 table #21: 2319290 bytes OK
+2022/08/16-08:57:58.822 1328 Delete type=0 #16
+2022/08/16-08:59:40.266 3c58 Compacting 1@1 + 2@2 files
+2022/08/16-08:59:40.404 3c58 Generated table #22@1: 1679 keys, 2110652 bytes
+2022/08/16-08:59:40.413 3c58 Generated table #23@1: 1048 keys, 74670 bytes
+2022/08/16-08:59:40.413 3c58 Compacted 1@1 + 2@2 files => 2185322 bytes
+2022/08/16-08:59:40.419 3c58 compacted to: files[ 0 0 2 0 0 0 0 ]
+2022/08/16-08:59:40.420 3c58 Delete type=2 #18
+2022/08/16-08:59:40.420 3c58 Delete type=2 #19
+2022/08/16-08:59:40.420 3c58 Delete type=2 #21
