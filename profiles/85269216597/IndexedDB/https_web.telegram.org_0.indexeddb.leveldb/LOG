@@ -1,5 +1,0 @@
-2022/08/16-08:33:26.885 424c Creating DB G:\Code\OFFICE-WORK\TELEGRAM\Telegram-noborderz\profiles\85269216597\IndexedDB\https_web.telegram.org_0.indexeddb.leveldb since it was missing.
-2022/08/16-08:33:26.903 424c Reusing MANIFEST G:\Code\OFFICE-WORK\TELEGRAM\Telegram-noborderz\profiles\85269216597\IndexedDB\https_web.telegram.org_0.indexeddb.leveldb/MANIFEST-000001
-2022/08/16-08:35:12.235 1810 Level-0 table #5: started
-2022/08/16-08:35:12.346 1810 Level-0 table #5: 1804363 bytes OK
-2022/08/16-08:35:12.350 1810 Delete type=0 #3

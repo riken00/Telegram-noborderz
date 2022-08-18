@@ -557,34 +557,16 @@ class view_on_post():
             for i in range(2):
                 self.new_tab()
                 random_sleep(6,7)
-                if self.find_element('number btn','//*[@id="auth-pages"]/div/div[2]/div[2]/div/div[2]/button',By.XPATH):
-                    login_need = True
-                    break
-                all_ele = False
-                # if self.find_element('Authentication Page','auth-pages',By.ID,page='login'):
-                #     login_need = True
-                #     break
-                try:all_ele = self.driver.find_elements(By.XPATH,'//*')
-                except Exception as e:...
-                login_need = False
-                if all_ele:
-                    for ele in all_ele:
-                        # print(ele.text)
-                        if "log in by phone number" in str(ele.text).lower():
-                            login_need = True
-                            break 
-                        elif "log in to telegram by" in str(ele.text).lower():
-                            login_need = True
-                            break 
             action = ActionChains(self.driver)
-
-            if self.find_element('Note','note',By.CLASS_NAME,timeout=4):
-                self.click_element('Find btn','auth-number-edit',By.CLASS_NAME)
+            if not self.find_element('user logged in','sidebar-tools-button',By.CLASS_NAME) :login_need = True
+            else :login_need = False
 
             for i in range(5):  
                 if login_need == True:
                     try:
                         self.new_tab()
+                        if self.find_element('Note','note',By.CLASS_NAME,timeout=4):
+                            self.click_element('Find btn','auth-number-edit',By.CLASS_NAME)
                         random_sleep(2,3)
                         self.click_element('phone number','c-ripple',By.CLASS_NAME)
                         self.input_text(self.number,'phone number field','//*[@id="auth-pages"]/div/div[2]/div[1]/div/div[3]/div[2]/div[1]')
@@ -603,24 +585,25 @@ class view_on_post():
                             action.click(element__).perform()
                         
                         self.new_tab()
-                        all_ele = False
-                        try:all_ele = self.driver.find_elements(By.XPATH,'//*')
-                        except Exception as e:...
-                        if all_ele:
-                            for ele in all_ele:
-                                # print(ele.text)
-                                if "log in by phone number" in str(ele.text).lower():
-                                    login_need = True
-                                    break 
-                                elif "log in to telegram by" in str(ele.text).lower():
-                                    login_need = True
-                                    break
-                                else: login_need = False
+                        
                         
                     except : 
                         self.new_tab()
                         ...
-                else : break
+                random_sleep()
+                if not self.find_element('user logged in','sidebar-tools-button',By.CLASS_NAME) :
+                   
+                    login_need = True
+                else :
+                    try:
+                        self.driver.execute_script('document.querySelector("#auth-pages > div > div.tabs-container.auth-pages__container > div.tabs-tab.page-authCode.active > div > div.phone-wrapper > span").click()')
+                    except Exception as e: 
+                        ...
+                        
+                    
+                    login_need = False
+                    break
+                # else : break
             
             client.connect()
             client(JoinChannelRequest(self.groupusername))
@@ -668,6 +651,7 @@ class view_on_post():
                 print(len(all_msg) ,total_sent_view ,'==========================5========================')
                 random_sleep(7,10)
                 displayed_msgs_eles = self.get_message_elements()
+                msg_ele = ''
                 for msg_ele in displayed_msgs_eles :
                     timestemp = msg_ele[1]
                     if not timestemp in self.viewed_msg_timestemps :self.viewed_msg_timestemps.append(timestemp)

@@ -21,28 +21,28 @@ def driver_options(profile_dir):
     options = webdriver.ChromeOptions() 
 
     # options.add_extension("CyberGhost_VPN.crx")#crx file path
-    # options.add_argument('--no-sandbox')
-    # options.add_argument('--autoplay-policy=no-user-gesture-required')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--autoplay-policy=no-user-gesture-required')
     options.add_argument('--start-maximized')    
     # options.add_argument('--single-process')
-    # options.add_argument('--disable-dev-shm-usage')
-    # options.add_argument("--disable-blink-features")
-    # options.add_argument("--ignore-certificate-errors")
-    # options.add_argument("--enable-javascript")
-    # options.add_argument("--disable-notifications")
-    # options.add_argument('--disable-blink-features=AutomationControlled')
-    # options.add_argument("--enable-popup-blocking")
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--disable-blink-features")
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--enable-javascript")
+    options.add_argument("--disable-notifications")
+    options.add_argument('--disable-blink-features=AutomationControlled')
+    options.add_argument("--enable-popup-blocking")
     # # options.add_argument('--user-data-dir=./profiles/')
     # # options.add_argument(f"--profile-directory={'1_'+str(username__)}")
     # options.add_experimental_option('useAutomationExtension', False)
-    # options.add_experimental_option("excludeSwitches", [
-    #     "enable-logging",
-    #     "enable-automation",
-    #     "ignore-certificate-errors",
-    #     "safebrowsing-disable-download-protection",
-    #     "safebrowsing-disable-auto-update",
-    #     "disable-client-side-phishing-detection"])
-    # options.add_argument("disable-infobars")
+    options.add_experimental_option("excludeSwitches", [
+        "enable-logging",
+        "enable-automation",
+        "ignore-certificate-errors",
+        "safebrowsing-disable-download-protection",
+        "safebrowsing-disable-auto-update",
+        "disable-client-side-phishing-detection"])
+    options.add_argument("disable-infobars")
     # options.add_argument('--no-sandbox')
     # options.add_argument('--autoplay-policy=no-user-gesture-required')
     # options.add_argument('--start-maximized')

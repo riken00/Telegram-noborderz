@@ -128,4 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 backups/
-G:\Code\OFFICE-WORK\TELEGRAM\Telegram-noborderz\profiles
+# G:/Code/OFFICE-WORK/TELEGRAM/Telegram-noborderz/profiles
+profiles/

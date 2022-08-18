@@ -29,7 +29,7 @@ class Command(BaseCommand):
                 count+= 1
                 print(count)    
                 print(client.get_me().first_name) 
-                time.sleep(0.5)  
+                time.sleep(0.25)  
             client.disconnect()
         print(count,'------------------')
         ...
